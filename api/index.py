@@ -1,8 +1,11 @@
+
 from flask import Flask, jsonify
+from flask_cors import CORS
 from datetime import datetime
 import pytz
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 def get_current_time(city):
     timezones = {
