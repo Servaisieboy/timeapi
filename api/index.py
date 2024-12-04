@@ -1,5 +1,4 @@
-
-from flask import Flask, jsonify
+from flask import Flask
 from datetime import datetime
 import pytz
 
@@ -17,12 +16,12 @@ def get_current_time(city):
 @app.route("/api/time/newyork", methods=["GET"])
 def time_new_york():
     time = get_current_time("New York")
-    return jsonify({"time": time})
+    return time, 200, {'Content-Type': 'text/plain'}
 
 @app.route("/api/time/porto", methods=["GET"])
 def time_porto():
     time = get_current_time("Porto")
-    return jsonify({"time": time})
+    return time, 200, {'Content-Type': 'text/plain'}
 
 # Export the app as a callable for Vercel
 app = app
