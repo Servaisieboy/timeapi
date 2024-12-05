@@ -19,14 +19,14 @@ def get_current_time(city):
 
 def get_temperature(city):
     """Get the current temperature for the given city."""
-    # MetaWeather API uses location WOEIDs (Where On Earth IDs)
+    # Coordinates for the cities (Open-Meteo requires lat/lon)
     city_mapping = {
-        "New York": 2459115,
-        "Porto": 2735943
+        "New York": {"lat": 40.7128, "lon": -74.0060},
+        "Porto": {"lat": 41.1579, "lon": -8.6291}
     }
     try:
-        woeid = city_mapping[city]
-        url = f"https://www.metaweather.com/api/location/{woeid}/"
+        coordinates = city_mapping[city]
+        url = f"https://api.open-meteo.com/v1/forecast?latitude={coordinates['lat']}&longitude={coordinates['lon']}&current_weather=true"
         response = requests.get(url)
         data = response.json()
         
@@ -34,8 +34,8 @@ def get_temperature(city):
         print(f"Response for {city}: {data}")
         
         if response.status_code == 200:
-            # Get the temperature in Celsius from the first forecast
-            return data["consolidated_weather"][0]["the_temp"]
+            # Get the temperature in Celsius
+            return data["current_weather"]["temperature"]
         else:
             return None  # Return None if API request fails
     except Exception as e:
